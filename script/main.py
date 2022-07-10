@@ -2,9 +2,11 @@ __author__ = ["DrSolidDevil"]
 __copyright__ = "Copyright 2022, DrSolidDevil"
 __credits__ = ["DrSolidDevil"]
 __license__ = "GPL"
-__version__ = "0.1"
+__version__ = "0.2"
 __maintainer__ = ["DrSolidDevil"]
 
+import funcs
+import os
 
 # These are settings variables
 minimum_class_amount = 2
@@ -21,39 +23,42 @@ responses_list = []
 
 
 
-# This is used for turning lists of x and y data into a json class for all classes except the last one.
-def insertFM(tag, patterns, responses):
-    # Since we can't have brackets in a string.
-    # If you want to use the format insert method so instead we also need to insert them.
-    a = "                 {}\"tag\": \"{}\",\n                 \"patterns\": {},\n                 \"responses\" {}\n                 {},\n"
 
-    a = a.format("{", tag, patterns, responses, "}")
-    return a
-
-# This is used for turning lists of x and y data into a json class but only for the last class.
-def insertLast(tag, patterns, responses):
-    # Since we can't have brackets in a string.
-    # If you want to use the format insert method so instead we also need to insert them.
-    a = "                 {}\n                 \"tag\": \"{}\",\n                 \"patterns\": {},\n                 \"responses\": {}\n                 {}\n            ]\n{}"
-    a = a.format("{", tag, patterns, responses, "}", "}")
-    return a
 
 
 
 
 # This is the input that determines how many times we will run the input loop aka how many classes
 class_amount = int(input(f"""How many classes will this have? (minimum {minimum_class_amount})\n"""))
-# This just gives some info
-print("The separator for the sentences is the # symbol and leave no space for example: Hello#Hi = [\"Hello\",\"Hi\"]")
+
+funcs.mca_check(class_amount, minimum_class_amount)
+
+# Gives the option to output data to a file or print to terminal.
+outputchoice = input("\nDo you want to output this to a file? (y/n)\n")
 
 
+# Checks the output choice for errors and turns it to a boolean.
+write_to_file = funcs.ocbool(outputchoice)
 
 
-# makes sure the amount of classes is able to be used without having an error.
-if class_amount < minimum_class_amount:
-    raise ValueError(f"""The amount of classes is below {minimum_class_amount}.""")
-else:
+# Checks if the user wants to write to file, if so it requests a file name
+if write_to_file is True:
+    # Gets the name for the output file.
+    filename = input("\nFilename: \nThis can be a already existing file that you want to be overwritten or a new file. ("
+                     "don\'t write the file extension in the name)\n")
+
+    # Gets the parent directory of this file.
+    pardir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+
+    # Adds the file extension to the file name
+    filename = f"""{pardir}\\json\\{filename}.json"""
+elif write_to_file is False:
     pass
+
+
+
+# This just gives some info
+print("\n( The separator for the sentences is the # symbol and leave no space for example: Hello#Hi = [\"Hello\",\"Hi\"] )")
 
 
 
@@ -83,13 +88,13 @@ for i in range(0, class_amount):
     else:
         pass
 
-    b = insertFM(tag_list[a], patterns_list[a], responses_list[a])
+    b = funcs.insertfm(tag_list[a], patterns_list[a], responses_list[a])
 
     content = content + b
 
 
 # Runs the last input cycle.
-lastinsert = insertLast(tag_list[(class_amount - 1)],
+lastinsert = funcs.insertlast(tag_list[(class_amount - 1)],
                               patterns_list[(class_amount - 1)],
                               responses_list[(class_amount - 1)])
 
@@ -99,5 +104,9 @@ out = content+lastinsert
 out = (core+out).replace("\'", "\"")
 
 
-# Outputs the final product
-print(out)
+if write_to_file is True:
+    f = open(filename, "w")
+    f.write(out)
+    print(f"""All data has been written to {filename}""")
+elif write_to_file is False:
+    print(out)
