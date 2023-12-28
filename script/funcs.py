@@ -2,7 +2,7 @@ __author__ = ["DrSolidDevil"]
 __copyright__ = "Copyright 2022, DrSolidDevil"
 __credits__ = ["DrSolidDevil"]
 __license__ = "GPL"
-__version__ = "0.2"
+__version__ = "0.3"
 __maintainer__ = ["DrSolidDevil"]
 
 
@@ -62,10 +62,6 @@ def mca_check(ca, mca):
     # makes sure the amount of classes is able to be used without having an error.
     if ca < mca:
         raise Exception(f"""The amount of classes is below {mca}.""")
-    else:
-        pass
-
-
 
 
 
@@ -87,7 +83,5 @@ def ocbool(oc):
         a = True
     elif oc == "n":
         a = False
-    else:
-        pass
 
     return a
