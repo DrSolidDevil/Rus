@@ -2,7 +2,7 @@ __author__ = ["DrSolidDevil"]
 __copyright__ = "Copyright 2022, DrSolidDevil"
 __credits__ = ["DrSolidDevil"]
 __license__ = "GPL"
-__version__ = "0.2"
+__version__ = "0.3"
 __maintainer__ = ["DrSolidDevil"]
 
 import funcs
@@ -52,8 +52,6 @@ if write_to_file is True:
 
     # Adds the file extension to the file name
     filename = f"""{pardir}\\json\\{filename}.json"""
-elif write_to_file is False:
-    pass
 
 
 
@@ -85,8 +83,6 @@ for i in range(0, class_amount):
 
     if i >= (class_amount - 1):
         break
-    else:
-        pass
 
     b = funcs.insertfm(tag_list[a], patterns_list[a], responses_list[a])
 
